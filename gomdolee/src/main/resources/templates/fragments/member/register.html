@@ -5,6 +5,9 @@
 
 <head>
 <title> register </title>
+<style type="text/css" layout:fragment="custom_css">
+.label-explain{ font-size:70%;margin-left:10px;}
+</style>
 </head>
 
 <body>
@@ -19,29 +22,30 @@
                     <div class="panel-body">
                         <form role="form">
                             <fieldset>
-	                             <div class="form-group">
+	                            <div class="form-group">
 					              <div class="form-label-group">
-					                <label for="inputId" id="idLabel">아이디</label>
-					                <input type="text" id="inputId" class="form-control" placeholder="아이디" required="required">
+					                <label for="register_id" id="idLabel">아이디</label>
+					                <label for="register_id_label" id="register_id_label" class="label-explain"></label>
+					                <input type="text" id="register_id" class="form-control" placeholder="아이디" required="required">
 					              </div>
 					            </div>
-					            <div class="form-group">
-					              <!-- <div class="form-row"> -->
-					                <div class="col-md-6">
-					                  <div class="form-label-group">
-					                    <label for="inputPassword">비밀번호</label>
-					                    <input type="password" id="inputPassword" class="form-control" placeholder="비밀번호" required="required">
-					                  </div>
-					                </div>
-					                <div class="col-md-6">
-					                  <div class="form-label-group">
-					                    <label for="confirmPassword" id="PasswordLabel">비밀번호 확인</label>
-					                    <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm password" required="required">
-					                  </div>
-					                </div>
-					              <!-- </div> -->
+
+	                            <div class="form-group">
+					              <div class="form-label-group">
+					                <label for="register_id" id="idLabel">비밀번호</label>
+					                <label for="register_pwd_label" id="register_pwd_label" class="label-explain"></label>
+					                <input type="text" id="register_id" class="form-control" placeholder="비밀번호" required="required">
+					              </div>
 					            </div>
-					            <input type="button" class="btn btn-primary btn-block" id="registerBtn" value="회원등록">
+
+	                            <div class="form-group">
+					              <div class="form-label-group">
+					                <label for="register_re_pwd" id="idLabel">비밀번호 확인</label>
+					                <label for="register_re_pwd_label" id="register_re_pwd_label" class="label-explain"></label>
+					                <input type="text" id="register_re_pwd" class="form-control" placeholder="비밀번호 확인" required="required">
+					              </div>
+					            </div>
+					            <input type="button" class="btn btn-primary btn-block" id="register_btn" value="회원등록">
                             </fieldset>
                         </form>
                     </div>
@@ -49,6 +53,58 @@
             </div>
         </div>
     </div>
+<script type="text/javascript" layout:fragment="custom_js">
+	var passCheck = false;
+	var idCheck = false;
+	var getRegCheck = RegExp(/^[a-zA-Z0-9]{4,12}$/);	
+    $(document).ready(function(){ 
+ 	$('body').keypress(function(e){ 
+ 		if(e.keyCode!=13) 
+			return; 
+ 		if(!$('#register_id').val())
+ 			$('#register_id').focus(); 
+ 		if(!$('#register_pwd').val()) 
+ 			$('#register_pwd').focus(); 
+ 		if(!$('#register_re_pwd').val()) 
+ 			$('#register_re_pwd').focus(); 
+ 		
+ 		if(passCheck && idCheck)
+			$('#register_btn').click();
+ 		}); 
+	});	
+    
+    $('#register_btn').on('click', function(){
+		var pwd = $('#register_pwd').val();
+		var pwd_check = $('#register_re_pwd').val();
+		
+		if(!getRegCheck.test($('#register_id').val())){
+			alert("아이디를 올바르게 입력해주세요");
+			return;			
+		}
+    });
+    
+    $('#register_id').keyup(function(){
+    	$.ajax({
+			type: "GET",
+			url: "/member-idcheck",
+			data: {"login_id" : $('#register_id').val()},
+			success: function(data) {
+			   	var result = data;
+				if(result == 'success'){
+					idCheck = true;
+					if(!getRegCheck.test($('#register_id').val())){
+						$('#register_id_label').text("아이디를 올바르게 입력해주세요");
+					} else {
+						$('#register_id_label').text('사용 가능한 아이디입니다');
+					}
+			   	}else{
+			  		idCheck = false;
+			      	$('#register_id_label').text('이미 존재하는 아이디입니다.');
+			   }
+			}    		
+    	});
+    });
+</script>
 </body>	
 
 </html>

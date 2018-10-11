@@ -11,7 +11,7 @@ import me.himna.sb.member.dao.MemberDao;
 import me.himna.sb.member.domain.MemberDomain;
 
 @Service
-public class MemberServiceImpl implements MemberSevice{
+public class MemberServiceImpl implements MemberService{
 	private static final Logger logger = LoggerFactory.getLogger(MemberServiceImpl.class);
 
 	//Field memberMapper in me.himna.sb.member.service.MemberServiceImpl 
@@ -38,9 +38,8 @@ public class MemberServiceImpl implements MemberSevice{
 	}
 
 	@Override
-	public int getLoginId(String id) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getLoginId(String login_id) throws Exception {
+		return memberMapper.getLoginId(login_id);
 	}
 	
 	
