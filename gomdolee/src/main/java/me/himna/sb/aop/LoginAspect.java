@@ -17,5 +17,10 @@ public class LoginAspect {
 	public void MemberService() {System.out.println("=============MemberServcie - LoginAspect=============");}
 	
 	
-	
+//	@Around("")
+//	public Object checkLoginAspect() {
+//		System.out.println("=============LoginAspect=============");
+//		Object result = null;
+//		return result;
+//	}
 }
