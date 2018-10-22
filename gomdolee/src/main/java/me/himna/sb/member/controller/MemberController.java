@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import me.himna.sb.member.domain.MemberDomain;
 import me.himna.sb.member.service.MemberService;
 
-//@RequestMapping(value="/member-")
+@RequestMapping(value="/member")
 @Controller
 public class MemberController {
 	
@@ -29,7 +29,7 @@ public class MemberController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/member-register", method=RequestMethod.GET)
+	@RequestMapping(value="/register", method=RequestMethod.GET)
 	public String register(HttpSession session, Model model) {
 		//if(session.getAttribute("id") != null){return "index";}
 
@@ -42,12 +42,13 @@ public class MemberController {
 	 * @return
 	 * @throws Exception 
 	 */
-	@RequestMapping(value="/member-join", method=RequestMethod.POST)
-	public String join(HttpServletRequest request) throws Exception {
+	@RequestMapping(value="/join", method=RequestMethod.POST)
+	public @ResponseBody String join(HttpServletRequest request) throws Exception {
 		String result = "fail";
 		MemberDomain member = new MemberDomain();
 		member.setLogin_id(request.getParameter("login_id"));
 		member.setLogin_password(request.getParameter("login_password"));
+		System.out.println("~~~~~~~~~~~~~~~~~~`"+member.getLogin_id()+";;"+member.getLogin_password());
 		if(member.getLogin_id()!=null && member.getLogin_password()!=null) {
 			if(memberService.joinProcess(member) == 1) { // 서비스와 연동하면서 예외처리가 반드시 필요한가보다.
 				result = "success";
@@ -55,17 +56,18 @@ public class MemberController {
 		}
 		return result;
 	}
+	
 	/**
 	 * ID CHECK 
 	 * @param request
 	 * @return
 	 * @throws Exception 
 	 */
-	@RequestMapping(value="/member-idcheck", method=RequestMethod.GET)
+	@RequestMapping(value="/idcheck", method=RequestMethod.GET)
 	public @ResponseBody String idCheck(HttpServletRequest request) throws Exception {
 		String result = "fail";
 		if(memberService.getLoginId(request.getParameter("login_id")) == 0) {
-			result =  "success";
+			result = "success";
 		} 
 		return result;		
 	}

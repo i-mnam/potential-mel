@@ -21,8 +21,8 @@
     		login_id, 
     		login_password
     	) VALUES (
-    	#{login_id}, 
-    	#{login_password}
+    		#{login_id}, 
+    		#{login_password}
     	)
     </insert>
     

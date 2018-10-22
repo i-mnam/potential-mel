@@ -34,7 +34,7 @@
 					              <div class="form-label-group">
 					                <label for="register_id" id="idLabel">비밀번호</label>
 					                <label for="register_pwd_label" id="register_pwd_label" class="label-explain"></label>
-					                <input type="text" id="register_id" class="form-control" placeholder="비밀번호" required="required">
+					                <input type="password" id="register_pwd" class="form-control" placeholder="비밀번호" required="required">
 					              </div>
 					            </div>
 
@@ -42,10 +42,10 @@
 					              <div class="form-label-group">
 					                <label for="register_re_pwd" id="idLabel">비밀번호 확인</label>
 					                <label for="register_re_pwd_label" id="register_re_pwd_label" class="label-explain"></label>
-					                <input type="text" id="register_re_pwd" class="form-control" placeholder="비밀번호 확인" required="required">
+					                <input type="password" id="register_re_pwd" class="form-control" placeholder="비밀번호 확인" required="required">
 					              </div>
 					            </div>
-					            <input type="button" class="btn btn-primary btn-block" id="register_btn" value="회원등록">
+					            <button type="button" class="btn btn-primary btn-block" id="register_btn">회원등록</button>
                             </fieldset>
                         </form>
                     </div>
@@ -54,26 +54,28 @@
         </div>
     </div>
 <script type="text/javascript" layout:fragment="custom_js">
-	var passCheck = false;
+	var passwordCheck = false;
 	var idCheck = false;
 	var getRegCheck = RegExp(/^[a-zA-Z0-9]{4,12}$/);	
     $(document).ready(function(){ 
- 	$('body').keypress(function(e){ 
- 		if(e.keyCode!=13) 
-			return; 
- 		if(!$('#register_id').val())
- 			$('#register_id').focus(); 
- 		if(!$('#register_pwd').val()) 
- 			$('#register_pwd').focus(); 
- 		if(!$('#register_re_pwd').val()) 
- 			$('#register_re_pwd').focus(); 
- 		
- 		if(passCheck && idCheck)
-			$('#register_btn').click();
- 		}); 
+ 		$('body').keypress(function(e){ 
+	 		if(e.keyCode!=13) 
+				return; 
+	 		if(!$('#register_id').val())
+	 			$('#register_id').focus(); 
+	 		if(!$('#register_pwd').val()) 
+	 			$('#register_pwd').focus(); 
+	 		if(!$('#register_re_pwd').val()) 
+	 			$('#register_re_pwd').focus(); 
+	 		if(passwordCheck && idCheck)
+				$('#register_btn').click();
+	 	}); 
+ 		//reset
+ 		$(":input").val('');
 	});	
     
     $('#register_btn').on('click', function(){
+    	console.log("click??!!");
 		var pwd = $('#register_pwd').val();
 		var pwd_check = $('#register_re_pwd').val();
 		
@@ -81,28 +83,75 @@
 			alert("아이디를 올바르게 입력해주세요");
 			return;			
 		}
+		
+		if(!idCheck){
+			alert("이미 존재하는 아이디입니다.");
+			return;
+		}
+		
+		if(!passwordCheck){
+			alert("비밀번호를 확인해주세요");
+			return;
+		}
+     
+		if(pwd != pwd_check){
+			alert("비밀번호를 확인해주세요");
+			return;
+		}
+	   
+	   	$.ajax({
+	   		type:"POST",
+	   		url:"/member/join",
+	   		data:{
+	   			"login_id":$('#register_id').val(),
+	   			"login_password":$('#register_pwd').val()
+	   		},
+	   		success: function(data){
+	   			var result = data;
+	   			if(result == 'success'){
+	   				alert("회원가입에 성공하였습니다.");
+	   				location.href="index";
+	   			} else {
+	   				alert("회원가입에 실패하였습니다.");
+	   				location.reload();
+	   			}
+	   		}
+	   	});
     });
     
     $('#register_id').keyup(function(){
     	$.ajax({
 			type: "GET",
-			url: "/member-idcheck",
+			url: "/member/idcheck",
 			data: {"login_id" : $('#register_id').val()},
 			success: function(data) {
 			   	var result = data;
 				if(result == 'success'){
 					idCheck = true;
 					if(!getRegCheck.test($('#register_id').val())){
-						$('#register_id_label').text("아이디를 올바르게 입력해주세요");
+						$('#register_id_label').text("아이디를 올바르게 입력해주세요").addClass('text-danger');
 					} else {
-						$('#register_id_label').text('사용 가능한 아이디입니다');
+						$('#register_id_label').text('사용 가능한 아이디입니다').removeClass('text-danger').addClass('text-info');
 					}
 			   	}else{
 			  		idCheck = false;
-			      	$('#register_id_label').text('이미 존재하는 아이디입니다.');
+			      	$('#register_id_label').text('이미 존재하는 아이디입니다.').addClass('text-danger');
 			   }
 			}    		
     	});
+    });
+    
+    $('#register_re_pwd').keyup(function(){
+        var pwd = $('#register_pwd').val();
+        var pwd_check = $('#register_re_pwd').val();
+        console.log(pwd + "// " + pwd_check);
+        if(pwd == pwd_check){
+           passwordCheck = true;
+           $('#register_pwd_label').text('동일한 비밀번호 입니다.').removeClass('text-danger').addClass('text-info');
+        }else{
+           passCheck = false;
+           $('#register_pwd_label').text('동일하지 않은 비밀번호 입니다.').addClass('text-danger');
+        }
     });
 </script>
 </body>	

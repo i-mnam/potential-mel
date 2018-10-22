@@ -107,10 +107,15 @@
 		    <groupId>nz.net.ultraq.thymeleaf</groupId>
 		    <artifactId>thymeleaf-layout-dialect</artifactId>
 		</dependency>
-		
+
+		<!-- aop -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>		
 		
 		<!-- 아직 추가하지 않은 목록 -->
-		<!-- jstl, aop, appache.commons, mongodb -->
+		<!-- jstl, appache.commons, mongodb -->
 		
 	</dependencies>
 
