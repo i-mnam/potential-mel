@@ -4,7 +4,7 @@
 		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
-<title> register </title>
+<title layout:fragment="custom_title">Register</title>
 <style type="text/css" layout:fragment="custom_css">
 .label-explain{ font-size:70%;margin-left:10px;}
 </style>
@@ -59,17 +59,28 @@
 	var getRegCheck = RegExp(/^[a-zA-Z0-9]{4,12}$/);	
     $(document).ready(function(){ 
  		$('body').keypress(function(e){ 
-	 		if(e.keyCode!=13) 
-				return; 
+	 		if(e.keyCode!=13) {
+	 			return; 
+	 		}
+			// enter	
 	 		if(!$('#register_id').val())
 	 			$('#register_id').focus(); 
 	 		if(!$('#register_pwd').val()) 
 	 			$('#register_pwd').focus(); 
 	 		if(!$('#register_re_pwd').val()) 
 	 			$('#register_re_pwd').focus(); 
-	 		if(passwordCheck && idCheck)
-				$('#register_btn').click();
-	 	}); 
+	 		if(passwordCheck && idCheck){
+	 			//alert("pwdChk:"+passwordCheck+"/idChk:"+idCheck);
+	 			$('#register_btn').click();
+	 		}
+				
+	 	});
+ 		$(":input").keypress(function(e){
+ 			if(e.keyCode==13){
+ 				//alert("input!! pwdChk:"+passwordCheck+"/idChk:"+idCheck);
+	 			$('#register_btn').click();
+ 			}
+ 		});
  		//reset
  		$(":input").val('');
 	});	
@@ -86,16 +97,19 @@
 		
 		if(!idCheck){
 			alert("이미 존재하는 아이디입니다.");
+			$('#register_id').focus();
 			return;
 		}
 		
 		if(!passwordCheck){
 			alert("비밀번호를 확인해주세요");
+			$('#register_re_pwd').focus(); 
 			return;
 		}
      
 		if(pwd != pwd_check){
 			alert("비밀번호를 확인해주세요");
+			$('#register_re_pwd').focus(); 
 			return;
 		}
 	   
@@ -110,7 +124,7 @@
 	   			var result = data;
 	   			if(result == 'success'){
 	   				alert("회원가입에 성공하였습니다.");
-	   				location.href="index";
+	   				location.href="/index";
 	   			} else {
 	   				alert("회원가입에 실패하였습니다.");
 	   				location.reload();

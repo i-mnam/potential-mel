@@ -4,9 +4,15 @@
 
 <body th:fragment="main_body">
     <div class="wrapper">
-        <div layout:fragment="content">
-		</div>
-    </div>
+    
+    	<!-- Navigation -->
+        <nav th:include="fragments/main/nav :: main_body_nav"
+        class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        </nav>
+        
+        <div id="page-wrapper" layout:fragment="content">
+		</div><!-- end: layout:fragment=content -->
+    </div><!-- end: wrapper -->
     <!-- jQuery -->
     <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
     <!-- Bootstrap Core JavaScript -->

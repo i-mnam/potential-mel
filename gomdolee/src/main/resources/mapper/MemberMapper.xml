@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="me.himna.sb.member.dao.MemberDao">
-    <select id="getMember" parameterType="java.lang.String" resultType="me.himna.sb.member.domain.MemberDomain">
+    <select id="getMemberByLoginId" parameterType="java.lang.String" resultType="me.himna.sb.member.domain.MemberDomain">
         SELECT 
         	* 
 		FROM TBL_MEMBER 
@@ -26,9 +26,9 @@
     	)
     </insert>
     
-    <select id="getLoginId" parameterType="java.lang.String" resultType="java.lang.Integer">
+    <select id="getCntByLoginId" parameterType="java.lang.String" resultType="java.lang.Integer">
     	SELECT COUNT(*) 
     	FROM TBL_MEMBER 
-    	WHERE login_id=#{id}
+    	WHERE login_id=#{login_id}
     </select>
 </mapper>

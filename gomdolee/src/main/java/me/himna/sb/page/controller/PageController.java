@@ -3,9 +3,11 @@ package me.himna.sb.page.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+@Controller
 public class PageController {
 	
 	/**
@@ -14,7 +16,7 @@ public class PageController {
 	 */
 	@RequestMapping(value="/")
 	public String home(HttpSession session) {
-		return "fragments/index/index";
+		return "fragments/main/index";
 	}
 	
 	/**
@@ -23,7 +25,8 @@ public class PageController {
 	 */
 	@RequestMapping(value="/index")
 	public String index(HttpSession session) {
-		return "index";
+		System.out.print("Index???");
+		return "fragments/main/index";
 	}
 	
 	@RequestMapping(value="/404")
@@ -31,4 +34,13 @@ public class PageController {
 	public String notFound(HttpSession session) {
 		return "404";
 	}
+	/**
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value="test")
+	public String test(HttpSession session) {
+		return "test";
+	}
+	
 }

@@ -39,7 +39,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public int getLoginId(String login_id) throws Exception {
-		return memberMapper.getLoginId(login_id);
+		return memberMapper.getCntByLoginId(login_id);
 	}
 	
 	

@@ -3,6 +3,8 @@
 		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 		
 <head th:fragment="main_head">
+	<th:block layout:fragment="custom_title"></th:block>
+	
 	<!-- Bootstrap Core CSS -->
 	<link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
 	
