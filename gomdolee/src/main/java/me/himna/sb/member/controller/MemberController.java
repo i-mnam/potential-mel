@@ -71,5 +71,27 @@ public class MemberController {
 		} 
 		return result;		
 	}
+
+	/**
+	 * LOGIN 
+	 * @param request
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value="/login", method=RequestMethod.GET)
+	public String login(HttpSession session, HttpServletRequest request) throws Exception {
+		return "fragments/member/login";
+	}
+
+	/**
+	 * LOGIN 
+	 * @param request
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value="/login", method=RequestMethod.POST)
+	public @ResponseBody String loginProc(HttpSession session, HttpServletRequest request) throws Exception {
+		return memberService.loginProcess(request.getParameter("login_id"), request.getParameter("login_pwd"), session);
+	}
 		
 }

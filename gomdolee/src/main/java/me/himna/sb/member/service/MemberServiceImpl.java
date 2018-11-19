@@ -26,13 +26,32 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public String loginProcess(String login_id, String login_password, HttpSession session) {
-		// TODO Auto-generated method stub
-		return null;
+	public String loginProcess(String login_id, String login_password, HttpSession session) throws Exception {
+
+		int memberCount = memberMapper.getCntByLoginId(login_id);
+		if(memberCount == 1) {
+			MemberDomain member = memberMapper.getMemberByLoginId(login_id);
+			if(member.getLogin_password().equals(login_password)) {
+				session.setAttribute("login_id", member.getLogin_id());
+				session.setAttribute("login_password", member.getLogin_password());
+				session.setMaxInactiveInterval(60*60);
+				logger.info("======== login success ========");
+				return "index";
+			} else {
+				return "not_match_info";
+			}
+		} else if(memberCount==0) {
+			logger.info("======== login fail ========");
+			return "none";
+		} else {
+			logger.info("======== login fail ?"+ memberCount+" ========");
+			return "?";
+		}
+
 	}
 
 	@Override
-	public String logoutProcess(HttpSession session) {
+	public String logoutProcess(HttpSession session) throws Exception{
 		// TODO Auto-generated method stub
 		return null;
 	}
