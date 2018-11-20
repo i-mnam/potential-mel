@@ -27,8 +27,9 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public String loginProcess(String login_id, String login_password, HttpSession session) throws Exception {
-
+		System.out.println(login_id+"//"+login_password);
 		int memberCount = memberMapper.getCntByLoginId(login_id);
+		System.out.println("memberCOunt: " + memberCount);
 		if(memberCount == 1) {
 			MemberDomain member = memberMapper.getMemberByLoginId(login_id);
 			if(member.getLogin_password().equals(login_password)) {

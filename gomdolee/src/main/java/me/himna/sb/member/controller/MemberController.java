@@ -73,7 +73,7 @@ public class MemberController {
 	}
 
 	/**
-	 * LOGIN 
+	 * LOGIN Page
 	 * @param request
 	 * @return
 	 * @throws Exception 
@@ -84,14 +84,15 @@ public class MemberController {
 	}
 
 	/**
-	 * LOGIN 
+	 * LOGIN Process
 	 * @param request
 	 * @return
 	 * @throws Exception 
 	 */
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public @ResponseBody String loginProc(HttpSession session, HttpServletRequest request) throws Exception {
-		return memberService.loginProcess(request.getParameter("login_id"), request.getParameter("login_pwd"), session);
+		System.out.println(request.getParameter("login_id")+"//"+ request.getParameter("login_password"));
+		return memberService.loginProcess(request.getParameter("login_id"), request.getParameter("login_password"), session);
 	}
 		
 }
