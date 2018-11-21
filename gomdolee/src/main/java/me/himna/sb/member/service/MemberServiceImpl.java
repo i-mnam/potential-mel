@@ -27,9 +27,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public String loginProcess(String login_id, String login_password, HttpSession session) throws Exception {
-		System.out.println(login_id+"//"+login_password);
 		int memberCount = memberMapper.getCntByLoginId(login_id);
-		System.out.println("memberCOunt: " + memberCount);
 		if(memberCount == 1) {
 			MemberDomain member = memberMapper.getMemberByLoginId(login_id);
 			if(member.getLogin_password().equals(login_password)) {
@@ -37,7 +35,7 @@ public class MemberServiceImpl implements MemberService{
 				session.setAttribute("login_password", member.getLogin_password());
 				session.setMaxInactiveInterval(60*60);
 				logger.info("======== login success ========");
-				return "index";
+				return "success";
 			} else {
 				return "not_match_info";
 			}
@@ -45,8 +43,8 @@ public class MemberServiceImpl implements MemberService{
 			logger.info("======== login fail ========");
 			return "none";
 		} else {
-			logger.info("======== login fail ?"+ memberCount+" ========");
-			return "?";
+			logger.info("======== login fail:"+memberCount+" ========");
+			return "fail";
 		}
 
 	}

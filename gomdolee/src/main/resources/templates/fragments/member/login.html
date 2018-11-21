@@ -31,7 +31,7 @@
                         <form role="form">
                             <fieldset>
                                 <div class="form-group">
-                                    <input id="member_login_id" class="form-control" placeholder="ID" name="email" type="email" autofocus>
+                                    <input id="member_login_id" class="form-control" placeholder="ID" name="login_id" type="text" autofocus>
                                 </div>
                                 <div class="form-group">
                                     <input id="member_login_pwd" class="form-control" placeholder="Password" name="password" type="password" value="">
@@ -69,6 +69,15 @@
     
     <script type="text/javascript" layout:fragment="custom_js">
     	$(document).ready(function(){
+    		if(!$('#member_login_id').val()){
+    			//$('#member_login_id').get(0).focus();
+    			setTimeout(function() { $('#member_login_id').focus() }, 3000);
+    			return;
+    		}
+    		if(!$('#member_login_pwd').val()){
+    			$('#member_login_pwd').get(0).focus();
+    			return;
+    		}
     		
     	});
     	$('#member_login_btn').on('click', function(){
@@ -92,12 +101,15 @@
     	   		},
     	   		success: function(data){
     	   			var result = data;
+    	   			console.log("[login-result]" + result);
     	   			if(result == 'success'){
     	   				location.href="/index";
+    	   			} else if(result == 'none'){
+    	   				alert("회원가입을 먼저 진행해주세요.");
     	   			} else {
     	   				alert("ID 또는 비밀번호를 다시 입력해주세요.");
-    	   				location.reload();
     	   			}
+    	   			location.reload();
     	   		}
     	   	});
     	});
