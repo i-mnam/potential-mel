@@ -18,8 +18,6 @@
 </head>
 
 <body>
-
-
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
@@ -42,7 +40,7 @@
                                     </label>
                                 </div>  -->
                                 <!-- Change this to a button or input when using this as a form -->
-                                <a href="#" id="member_login_btn" class="btn btn-lg btn-success btn-block">Login</a>
+                                <button id="member_login_btn" class="btn btn-lg btn-success btn-block">Login</button>
                             </fieldset>
                         </form>
                     </div>
@@ -69,15 +67,27 @@
     
     <script type="text/javascript" layout:fragment="custom_js">
     	$(document).ready(function(){
-    		if(!$('#member_login_id').val()){
-    			//$('#member_login_id').get(0).focus();
-    			setTimeout(function() { $('#member_login_id').focus() }, 3000);
-    			return;
-    		}
-    		if(!$('#member_login_pwd').val()){
-    			$('#member_login_pwd').get(0).focus();
-    			return;
-    		}
+    		$('body').keypress(function(e){
+    			if(e.keyCode!=13){console.log("?");return;}
+    			if(!$('#member_login_id').val()){
+        			//$('#member_login_id').get(0).focus();
+        			setTimeout(function() { $('#member_login_id').focus() }, 1000);
+        			//return;
+        		}
+        		if(!$('#member_login_pwd').val()){
+        			$('#member_login_pwd').get(0).focus();
+        			//return;
+        		}
+        		
+        		
+    		});
+    		$(":input").keypress(function(e){
+	 			if(e.keyCode==13){
+	 				if((!$('#member_login_id').val()) && (!$('#member_login_pwd').val())){
+	        			$('#member_login_btn').click();
+	        		}
+	 			}
+	 		});
     		
     	});
     	$('#member_login_btn').on('click', function(){
@@ -91,7 +101,6 @@
     			$('#member_login_pwd').focus();
     			return;
     		}
-    		
     	   	$.ajax({
     	   		type:"POST",
     	   		url:"/member/login",
@@ -104,6 +113,7 @@
     	   			console.log("[login-result]" + result);
     	   			if(result == 'success'){
     	   				location.href="/index";
+    	   				return;
     	   			} else if(result == 'none'){
     	   				alert("회원가입을 먼저 진행해주세요.");
     	   			} else {

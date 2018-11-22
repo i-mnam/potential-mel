@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      	layout:decorator="layout/default" 
 		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
+<!-- layout:decorator="layout/default"  -->
 <head>
-<title layout:fragment="custom_title">Register</title>
-<style type="text/css" layout:fragment="custom_css">
-.label-explain{ font-size:70%;margin-left:10px;}
-</style>
+	<title>Register</title>
+		<!-- Bootstrap Core CSS -->
+	<link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">	
+	<!-- MetisMenu CSS -->
+	<link th:href="@{/vendor/metisMenu/metisMenu.min.css}" rel="stylesheet">	
+	<!-- Custom CSS -->
+	<link th:href="@{/dist/css/sb-admin-2.css}" rel="stylesheet">	
+	<!-- Morris Charts CSS -->
+	<link th:href="@{/vendor/morrisjs/morris.css}" rel="stylesheet">	
+	<!-- Custom Fonts -->
+	<link th:href="@{/vendor/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css">
+	<style type="text/css">
+		.label-explain{ font-size:70%;margin-left:10px;}
+	</style>
 </head>
 
 <body>
 	<!-- 기존 html -->
-	<div class="container" layout:fragment="content">
+	<div class="container">
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
@@ -53,121 +62,133 @@
             </div>
         </div>
     </div>
-<script type="text/javascript" layout:fragment="custom_js">
-	var passwordCheck = false;
-	var idCheck = false;
-	var getRegCheck = RegExp(/^[a-zA-Z0-9]{4,12}$/);	
-    $(document).ready(function(){ 
- 		$('body').keypress(function(e){ 
-	 		if(e.keyCode!=13) {
-	 			return; 
-	 		}
-			// enter	
-	 		if(!$('#register_id').val())
-	 			$('#register_id').focus(); 
-	 		if(!$('#register_pwd').val()) 
-	 			$('#register_pwd').focus(); 
-	 		if(!$('#register_re_pwd').val()) 
-	 			$('#register_re_pwd').focus(); 
-	 		if(passwordCheck && idCheck){
-	 			//alert("pwdChk:"+passwordCheck+"/idChk:"+idCheck);
-	 			$('#register_btn').click();
-	 		}
-				
-	 	});
- 		$(":input").keypress(function(e){
- 			if(e.keyCode==13){
- 				//alert("input!! pwdChk:"+passwordCheck+"/idChk:"+idCheck);
-	 			$('#register_btn').click();
- 			}
- 		});
- 		//reset
- 		$(":input").val('');
-	});	
     
-    $('#register_btn').on('click', function(){
-    	console.log("click??!!");
-		var pwd = $('#register_pwd').val();
-		var pwd_check = $('#register_re_pwd').val();
-		
-		if(!getRegCheck.test($('#register_id').val())){
-			alert("아이디를 올바르게 입력해주세요");
-			return;			
-		}
-		
-		if(!idCheck){
-			alert("이미 존재하는 아이디입니다.");
-			$('#register_id').focus();
-			return;
-		}
-		
-		if(!passwordCheck){
-			alert("비밀번호를 확인해주세요");
-			$('#register_re_pwd').focus(); 
-			return;
-		}
-     
-		if(pwd != pwd_check){
-			alert("비밀번호를 확인해주세요");
-			$('#register_re_pwd').focus(); 
-			return;
-		}
-	   
-	   	$.ajax({
-	   		type:"POST",
-	   		url:"/member/join",
-	   		data:{
-	   			"login_id":$('#register_id').val(),
-	   			"login_password":$('#register_pwd').val()
-	   		},
-	   		success: function(data){
-	   			var result = data;
-	   			if(result == 'success'){
-	   				alert("회원가입에 성공하였습니다.");
-	   				location.href="/index";
-	   			} else {
-	   				alert("회원가입에 실패하였습니다.");
-	   				location.reload();
-	   			}
-	   		}
-	   	});
-    });
     
-    $('#register_id').keyup(function(){
-    	$.ajax({
-			type: "GET",
-			url: "/member/idcheck",
-			data: {"login_id" : $('#register_id').val()},
-			success: function(data) {
-			   	var result = data;
-				if(result == 'success'){
-					idCheck = true;
-					if(!getRegCheck.test($('#register_id').val())){
-						$('#register_id_label').text("아이디를 올바르게 입력해주세요").addClass('text-danger');
-					} else {
-						$('#register_id_label').text('사용 가능한 아이디입니다').removeClass('text-danger').addClass('text-info');
-					}
-			   	}else{
-			  		idCheck = false;
-			      	$('#register_id_label').text('이미 존재하는 아이디입니다.').addClass('text-danger');
-			   }
-			}    		
-    	});
-    });
-    
-    $('#register_re_pwd').keyup(function(){
-        var pwd = $('#register_pwd').val();
-        var pwd_check = $('#register_re_pwd').val();
-        console.log(pwd + "// " + pwd_check);
-        if(pwd == pwd_check){
-           passwordCheck = true;
-           $('#register_pwd_label').text('동일한 비밀번호 입니다.').removeClass('text-danger').addClass('text-info');
-        }else{
-           passCheck = false;
-           $('#register_pwd_label').text('동일하지 않은 비밀번호 입니다.').addClass('text-danger');
-        }
-    });
-</script>
+    <!-- jQuery -->
+    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script th:src="@{/vendor/metisMenu/metisMenu.min.js}"></script>
+    <!-- Morris Charts JavaScript -->
+    <script th:src="@{/vendor/raphael/raphael.min.js}"></script>
+    <!-- <script src="vendor/morrisjs/morris.min.js"></script> -->
+    <!-- <script src="data/morris-data.js"></script> -->
+    <!-- Custom Theme JavaScript -->
+    <script th:src="@{/dist/js/sb-admin-2.js}"></script>
+	<script type="text/javascript">
+		var passwordCheck = false;
+		var idCheck = false;
+		var getRegCheck = RegExp(/^[a-zA-Z0-9]{4,12}$/);	
+	    $(document).ready(function(){ 
+	 		$('body').keypress(function(e){ 
+		 		if(e.keyCode!=13) {
+		 			return; 
+		 		}
+				// enter	
+		 		if(!$('#register_id').val()){setTimeout(function() { $('#register_id').focus() }, 3000);return;}
+		 		if(!$('#register_pwd').val()){setTimeout(function() { $('#register_pwd').focus() }, 3000);return;}
+		 		if(!$('#register_re_pwd').val()) {setTimeout(function() { $('#register_re_pwd').focus() }, 3000);return;}
+		 		
+					
+		 	});
+	 		$(":input").keypress(function(e){
+	 			if(e.keyCode==13){
+	 				//alert("input!! pwdChk:"+passwordCheck+"/idChk:"+idCheck);
+	 				if(passwordCheck && idCheck){
+			 			//alert("pwdChk:"+passwordCheck+"/idChk:"+idCheck);
+			 			$('#register_btn').click();
+			 		}
+		 			//$('#register_btn').click();
+	 			}
+	 		});
+	 		//reset
+	 		$(":input").val('');
+		});	
+	    
+	    $('#register_btn').on('click', function(){
+	    	console.log("click??!!");
+			var pwd = $('#register_pwd').val();
+			var pwd_check = $('#register_re_pwd').val();
+			
+			if(!getRegCheck.test($('#register_id').val())){
+				alert("아이디를 올바르게 입력해주세요");
+				return;			
+			}
+			
+			if(!idCheck){
+				alert("이미 존재하는 아이디입니다.");
+				$('#register_id').focus();
+				return;
+			}
+			
+			if(!passwordCheck){
+				alert("비밀번호를 확인해주세요");
+				$('#register_re_pwd').focus(); 
+				return;
+			}
+	     
+			if(pwd != pwd_check){
+				alert("비밀번호를 확인해주세요");
+				$('#register_re_pwd').focus(); 
+				return;
+			}
+		   
+		   	$.ajax({
+		   		type:"POST",
+		   		url:"/member/join",
+		   		data:{
+		   			"login_id":$('#register_id').val(),
+		   			"login_password":$('#register_pwd').val()
+		   		},
+		   		success: function(data){
+		   			var result = data;
+		   			if(result == 'success'){
+		   				alert("회원가입에 성공하였습니다.");
+		   				location.href="/index";
+		   			} else {
+		   				alert("회원가입에 실패하였습니다.");
+		   				location.reload();
+		   			}
+		   		}
+		   	});
+	    });
+	    
+	    $('#register_id').keyup(function(){
+	    	$.ajax({
+				type: "GET",
+				url: "/member/idcheck",
+				data: {"login_id" : $('#register_id').val()},
+				success: function(data) {
+				   	var result = data;
+					if(result == 'success'){
+						idCheck = true;
+						if(!getRegCheck.test($('#register_id').val())){
+							$('#register_id_label').text("아이디를 올바르게 입력해주세요").addClass('text-danger');
+						} else {
+							$('#register_id_label').text('사용 가능한 아이디입니다').removeClass('text-danger').addClass('text-info');
+						}
+				   	}else{
+				  		idCheck = false;
+				      	$('#register_id_label').text('이미 존재하는 아이디입니다.').addClass('text-danger');
+				   }
+				}    		
+	    	});
+	    });
+	    
+	    $('#register_re_pwd').keyup(function(){
+	        var pwd = $('#register_pwd').val();
+	        var pwd_check = $('#register_re_pwd').val();
+	        console.log(pwd + "// " + pwd_check);
+	        if(pwd == pwd_check){
+	           passwordCheck = true;
+	           $('#register_pwd_label').text('동일한 비밀번호 입니다.').removeClass('text-danger').addClass('text-info');
+	        }else{
+	           passCheck = false;
+	           $('#register_pwd_label').text('동일하지 않은 비밀번호 입니다.').addClass('text-danger');
+	        }
+	    });
+	</script>
 </body>	
 
 </html>
