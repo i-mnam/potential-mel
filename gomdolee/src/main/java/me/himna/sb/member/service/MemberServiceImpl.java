@@ -27,7 +27,11 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public String loginProcess(String login_id, String login_password, HttpSession session) throws Exception {
+		System.out.println("@[loginProc]" + login_id + "//" + login_password);
+		
+		
 		int memberCount = memberMapper.getCntByLoginId(login_id);
+		System.out.println("memberCOunt:"+memberCount);
 		if(memberCount == 1) {
 			MemberDomain member = memberMapper.getMemberByLoginId(login_id);
 			if(member.getLogin_password().equals(login_password)) {
@@ -51,8 +55,17 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public String logoutProcess(HttpSession session) throws Exception{
-		// TODO Auto-generated method stub
-		return null;
+		String logoutStatus = "success";
+		if(session == null) {
+			logger.info("======== logout fail ========");
+			logoutStatus = "fail";
+		}else {
+			logger.info("======== logout success ========");
+			logoutStatus = "success";
+			session.invalidate();
+			
+		}
+		return logoutStatus;
 	}
 
 	@Override

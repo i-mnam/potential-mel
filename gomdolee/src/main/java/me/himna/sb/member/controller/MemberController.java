@@ -80,6 +80,7 @@ public class MemberController {
 	 */
 	@RequestMapping(value="/login", method=RequestMethod.GET)
 	public String login(HttpSession session, HttpServletRequest request) throws Exception {
+		System.out.println("@@[GET]  login");
 		return "fragments/member/login";
 	}
 
@@ -91,8 +92,25 @@ public class MemberController {
 	 */
 	@RequestMapping(value="/login", method=RequestMethod.POST)
 	public @ResponseBody String loginProc(HttpSession session, HttpServletRequest request) throws Exception {
-		System.out.println(request.getParameter("login_id")+"//"+ request.getParameter("login_password"));
+		System.out.println("@@[POST]"+request.getParameter("login_id")+"//"+ request.getParameter("login_password"));
 		return memberService.loginProcess(request.getParameter("login_id"), request.getParameter("login_password"), session);
 	}
-		
+
+	/**
+	 * LOGOUT Process
+	 * @param request
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping(value="/logout", method=RequestMethod.GET)
+	public String logoutProc(HttpSession session, HttpServletRequest request) throws Exception {
+		System.out.println("@@[GET]logout : login_id가 없을 수 가 없다. "+session.getAttribute("login_id"));
+		String result = memberService.logoutProcess(session);
+		if(result.equals("success")) {
+			System.out.println("sucess");
+		}else {
+			System.out.println("fail");
+		}
+		return "fragments/member/login";
+	}
 }
